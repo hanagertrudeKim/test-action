@@ -41,12 +41,17 @@ jobs:
               core.setOutput('pullRequestLink', JSON.stringify(prUrl));
             }
 
+      - name: test valiable
+        uses: actions/github-script@v7
+        with: 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: console.log(${{ steps.pick_random_reviewer.outputs }})
+
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
           reviewers: "${{ steps.pick_random_reviewer.outputs.reviewer1.githubName }}, ${{ steps.pick_random_reviewer.outputs.reviewer2.githubName }}"
           token: ${{ secrets.GITHUB_TOKEN }}
-          script: console.log(${{ steps.pick_random_reviewer.outputs }})
       
 
       - name: Send Slack Trigger
