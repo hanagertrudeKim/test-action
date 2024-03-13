@@ -23,8 +23,6 @@ jobs:
             const prCreator = context.payload.pull_request.user.login;
             const prUrl = context.payload.pull_request.html_url;
             const prCreatorJson = developers.reviewers.find(person => person.githubName === prCreator);
-            console.log(prCreatorJson);
-            console.log(developers.reviewers);
 
             if (developers.length <= 1) {
               core.setOutput('reviewers', [prCreatorJson.name]);
@@ -45,8 +43,10 @@ jobs:
       - name: Add Pull Request Reviewer
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewers[0] }}, ${{ steps.pick_random_reviwer.outputs.reviewers[1] }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewers[0] }}, ${{ steps.pick_random_reviwer.outputs.reviewers[1] }}
+          re-request-when-approved: true
+          re-request-when-changes-requested: true
 
       - name: Send Slack Trigger
         run: |
