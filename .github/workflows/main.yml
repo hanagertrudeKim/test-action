@@ -35,7 +35,7 @@ jobs:
               const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
 
-              core.setOutput('reviewers1', randomReviewer1);
+              core.setOutput('reviewers1', randomReviewer);
               core.setOutput('reviewers2', randomReviewer2);
               core.setOutput('writer', prCreatorJson.name);
               core.setOutput('pullRequestLink', prUrl);
