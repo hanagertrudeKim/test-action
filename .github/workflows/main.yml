@@ -29,7 +29,7 @@ jobs:
               core.setOutput('writer', prCreatorJson.name);
               core.setOutput('pullRequestLink', prUrl);
             } else {
-              const candidateInternalReviewers = developers.reviewers.filter(person => person.team === prCreatorJson.team && person.name !== prCreator);
+              const candidateInternalReviewers = developers.reviewers.filter(person => person.team === prCreatorJson.team && person.githubName !== prCreator);
               const candidateExternalReviewers = developers.reviewers.filter(person => person.team !== prCreatorJson.team);
 
               const randomReviewer1 = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)];
