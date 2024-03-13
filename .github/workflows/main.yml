@@ -35,8 +35,8 @@ jobs:
               const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
 
-              core.setOutput('reviewers1', randomReviewer);
-              core.setOutput('reviewers2', randomReviewer2);
+              core.setOutput('reviewer1', randomReviewer);
+              core.setOutput('reviewer2', randomReviewer2);
               core.setOutput('writer', prCreatorJson.name);
               core.setOutput('pullRequestLink', prUrl);
             }
@@ -44,10 +44,8 @@ jobs:
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
+          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewer }}, ${{ steps.pick_random_reviwer.outputs.reviewer2 }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          reviewers: john,kramer,seinfeld
-          re-request-when-approved: true
-          re-request-when-changes-requested: true
       
 
       - name: Send Slack Trigger
