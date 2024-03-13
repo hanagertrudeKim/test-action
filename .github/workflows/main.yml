@@ -41,13 +41,14 @@ jobs:
               core.setOutput('pullRequestLink', prUrl);
             }
 
-      - name: Add Pull Request Reviewer
+      - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewers1 }}, ${{ steps.pick_random_reviwer.outputs.reviewers2 }}
+          reviewers: john,kramer,seinfeld
           re-request-when-approved: true
           re-request-when-changes-requested: true
+      
 
       - name: Send Slack Trigger
         run: |
