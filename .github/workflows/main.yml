@@ -22,8 +22,7 @@ jobs:
             const developers = JSON.parse(fs.readFileSync(`${{ github.workspace }}/.github/workflows/reviewer.json`));
             const prCreator = context.payload.pull_request.user.login;
             const prUrl = context.payload.pull_request.html_url;
-            console.log(developers);
-            const prCreatorJson = developers.find(person => person.githubName === prCreator);
+            const prCreatorJson = developers.reviewers.find(person => person.githubName === prCreator);
 
             if (developers.length <= 1) {
               core.setOutput('reviewers', [prCreatorJson.name]);
