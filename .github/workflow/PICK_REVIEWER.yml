@@ -1,0 +1,34 @@
+name: "Pick Reviewer"
+
+on:
+  pull_request_target:
+    types: opened
+    branches: develop
+
+jobs:
+  pick-random-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Pick random reviewer
+        id: pick_random_reviewer
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: console.log(context)
+
+      - name: Add Pull Request Reviewer
+        uses: madrapps/add-reviewers@v1
+        with:
+          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewers[0] }}, ${{ steps.pick_random_reviwer.outputs.reviewers[1] }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Slack Trigger
+        run: |
+          curl -X POST https://api-slack.internal.bcsdlab.com/api/review-request/front \
+          -H 'Content-Type: application/json' \
+          -d '{ "pullRequestLink": "${{ steps.pick_random_reviewer.outputs.pullRequestLink }}", \
+          "writer": "${{ steps.pick_random_reviewer.outputs.writer }}", \
+          "reviewers": "${{steps.pick_random_reviwer.outputs.reviewers}}" }'
