@@ -35,20 +35,17 @@ jobs:
               const randomReviewer1 = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)];
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)];
               
-              core.setOutput('reviewer1Name', JSON.stringify(randomReviewer1.name));
-              core.setOutput('reviewer1GithubName', JSON.stringify(randomReviewer1.githubName));
-              core.setOutput('reviewer2', JSON.stringify(randomReviewer2));
-              core.setOutput('writer', JSON.stringify(prCreatorJson.name));
-              core.setOutput('pullRequestLink', JSON.stringify(prUrl));
+              core.setOutput('reviewer1', JSON.parse(randomReviewer1.name));
+              core.setOutput('reviewer2', JSON.parse(randomReviewer2));
+              core.setOutput('writer', JSON.parse(prCreatorJson.name));
+              core.setOutput('pullRequestLink', JSON.parse(prUrl));
             }
 
       - name: test valiable
         uses: actions/github-script@v7
         with: 
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: | 
-                console.log(${{ steps.pick_random_reviewer.outputs.reviewer1GithubName }}) \
-                console.log(${{ steps.pick_random_reviewer.outputs.reviewer1Name }})
+          script: console.log(${{ steps.pick_random_reviewer.outputs.reviewer1 }})
 
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
