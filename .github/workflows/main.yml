@@ -29,8 +29,8 @@ jobs:
               core.setOutput('writer', prCreatorJson.name);
               core.setOutput('pullRequestLink', prUrl);
             } else {
-              const candidateInternalReviewers = developers.filter(person => person.team === prCreatorJson.team);
-              const candidateExternalReviewers = developers.filter(person => person.team !== prCreatorJson.team);
+              const candidateInternalReviewers = developers.reviewers.filter(person => person.team === prCreatorJson.team);
+              const candidateExternalReviewers = developers.reviewers.filter(person => person.team !== prCreatorJson.team);
 
               const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
