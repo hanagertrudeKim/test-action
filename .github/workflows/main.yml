@@ -35,10 +35,10 @@ jobs:
               const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
 
-              core.setOutput('reviewer1', randomReviewer);
-              core.setOutput('reviewer2', randomReviewer2);
-              core.setOutput('writer', prCreatorJson.name);
-              core.setOutput('pullRequestLink', prUrl);
+              core.setOutput('reviewer', JSON.stringify(randomReviewer));
+              core.setOutput('reviewer2', JSON.stringify(randomReviewer2));
+              core.setOutput('writer', JSON.stringify(prCreatorJson.name));
+              core.setOutput('pullRequestLink', JSON.stringify(prUrl));
             }
 
       - name: Add Reviewers
@@ -50,8 +50,10 @@ jobs:
 
       - name: Send Slack Trigger
         run: |
-          curl -X POST https://api-slack.internal.bcsdlab.com/api/review-request/front \
+          curl -X POST https://api-slack.internal.bcsdlab.com/api/review-request/frontend \
           -H 'Content-Type: application/json' \
-          -d '{ "pullRequestLink": "${{ steps.pick_random_reviewer.outputs.pullRequestLink }}", \
-          "writer": "${{ steps.pick_random_reviewer.outputs.writer }}", \
-          "reviewers": "[${{steps.pick_random_reviwer.outputs.reviewers1}}, ${{steps.pick_random_reviwer.outputs.reviewers2}}]" }'
+          -d '{
+                "pullRequestLink": "https://github.com/BCSDLab/KOIN_OWNER_WEB/pull/180",
+                "writer": "김하나",
+                "reviewers": ["채승윤", "최정훈"]
+              }'
