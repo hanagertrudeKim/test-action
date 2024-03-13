@@ -16,29 +16,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-
-            const developers = JSON.parse(fs.readFileSync(`${{ github.workspace }}/.github/workflows/reviewer.json`));
-            const prCreator = github.event.pull_request.assignee.login;
-            const prUrl = github.event.pull_request.html_url;
-            const prCreatorJson = developers.find(person => person.githubName === prCreator);
-
-            if (developers.length <= 1) {
-              core.setOutput('reviewers', [prCreatorJson.name]);
-              core.setOutput('writer', prCreatorJson.name);
-              core.setOutput('pullRequestLink', prUrl);
-            } else {
-              const candidateInternalReviewers = developers.filter(person => person.team === prCreatorJson.team);
-              const candidateExternalReviewers = developers.filter(person => person.team !== prCreatorJson.team);
-
-              const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
-              const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
-
-              core.setOutput('reviewers', [randomReviewer, randomReviewer2]);
-              core.setOutput('writer', prCreatorJson.name);
-              core.setOutput('pullRequestLink', prUrl);
-            }
+          script: console.log(context)
 
       - name: Add Pull Request Reviewer
         uses: madrapps/add-reviewers@v1
