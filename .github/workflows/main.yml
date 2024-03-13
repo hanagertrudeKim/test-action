@@ -23,6 +23,8 @@ jobs:
             const prCreator = context.payload.pull_request.user.login;
             const prUrl = context.payload.pull_request.html_url;
             const prCreatorJson = developers.reviewers.find(person => person.githubName === prCreator);
+            console.log(prCreatorJson);
+            console.log(developers.reviewers);
 
             if (developers.length <= 1) {
               core.setOutput('reviewers', [prCreatorJson.name]);
