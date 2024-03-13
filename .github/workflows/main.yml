@@ -16,7 +16,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: console.log(context.Context)
+          script: console.log(context)
 
       - name: Add Pull Request Reviewer
         uses: madrapps/add-reviewers@v1
