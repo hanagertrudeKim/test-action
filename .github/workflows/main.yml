@@ -25,7 +25,7 @@ jobs:
             const prCreatorJson = developers.reviewers.find(person => person.githubName === prCreator);
 
             if (developers.length <= 1) {
-              core.setOutput('reviewers', [prCreatorJson.name]);
+              core.setOutput('reviewers', developers.reviewers[0]);
               core.setOutput('writer', prCreatorJson.name);
               core.setOutput('pullRequestLink', prUrl);
             } else {
@@ -44,7 +44,7 @@ jobs:
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewer.githubName }}, ${{ steps.pick_random_reviwer.outputs.reviewer2.githubName }}
+          reviewers: ${{ steps.pick_random_reviewer.outputs.reviewer.githubName }}, ${{ steps.pick_random_reviewer.outputs.reviewer2.githubName }}
           token: ${{ secrets.GITHUB_TOKEN }}
       
 
@@ -53,7 +53,7 @@ jobs:
           curl -X POST https://api-slack.internal.bcsdlab.com/api/review-request/frontend \
           -H 'Content-Type: application/json' \
           -d '{
-                "pullRequestLink": ${{ steps.pick_random_reviwer.outputs.pullRequestLink }},
-                "writer": ${{ steps.pick_random_reviwer.outputs.writer }},
-                "reviewers": [${{ steps.pick_random_reviwer.outputs.reviewer.name }}, ${{ steps.pick_random_reviwer.outputs.reviewer2.name }}]
+                "pullRequestLink": ${{ steps.pick_random_reviewer.outputs.pullRequestLink }},
+                "writer": ${{ steps.pick_random_reviewer.outputs.writer }},
+                "reviewers": [${{ steps.pick_random_reviewer.outputs.reviewer.name }}, ${{ steps.pick_random_reviewer.outputs.reviewer2.name }}]
               }'
