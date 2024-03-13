@@ -19,7 +19,7 @@ jobs:
           script: |
             const fs = require('fs');
 
-            const developers = fs.readFileSync(`${{ github.workspace }}/.github/workflows/reviewer.json`));
+            const developers = JSON.parse(fs.readFileSync(`${{ github.workspace }}/.github/workflows/reviewer.json`));
             const prCreator = context.payload.pull_request.user.login;
             const prUrl = context.payload.pull_request.html_url;
             const prCreatorJson = developers.reviewers.find(person => person.githubName === prCreator);
@@ -35,10 +35,10 @@ jobs:
               const randomReviewer1 = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)];
               const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)];
               
-              core.setOutput('reviewer1', randomReviewer1);
-              core.setOutput('reviewer2', randomReviewer2);
-              core.setOutput('writer', prCreatorJson.name);
-              core.setOutput('pullRequestLink', prUrl);
+              core.setOutput('reviewer1', JSON.stringify(randomReviewer1));
+              core.setOutput('reviewer2', JSON.stringify(randomReviewer2));
+              core.setOutput('writer', JSON.stringify(prCreatorJson.name));
+              core.setOutput('pullRequestLink', JSON.stringify(prUrl));
             }
 
       - name: test valiable
