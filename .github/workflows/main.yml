@@ -52,7 +52,7 @@ jobs:
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: "${{ steps.pick_random_reviewer.outputs.reviewer1GithubName }}, ${{ steps.pick_random_reviewer.outputs.reviewer2GithubName }}"
+          reviewers: ${{ steps.pick_random_reviewer.outputs.reviewer1GithubName }}, ${{ steps.pick_random_reviewer.outputs.reviewer2GithubName }}
           token: ${{ secrets.GITHUB_TOKEN }}
       
 
