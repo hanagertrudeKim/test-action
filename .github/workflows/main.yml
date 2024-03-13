@@ -32,19 +32,19 @@ jobs:
               const candidateInternalReviewers = developers.reviewers.filter(person => person.team === prCreatorJson.team);
               const candidateExternalReviewers = developers.reviewers.filter(person => person.team !== prCreatorJson.team);
 
-              const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)].name;
-              const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)].name;
+              const randomReviewer = candidateInternalReviewers[Math.floor(Math.random() * candidateInternalReviewers.length)];
+              const randomReviewer2 = candidateExternalReviewers[Math.floor(Math.random() * candidateExternalReviewers.length)];
 
-              core.setOutput('reviewer', JSON.stringify(randomReviewer));
-              core.setOutput('reviewer2', JSON.stringify(randomReviewer2));
-              core.setOutput('writer', JSON.stringify(prCreatorJson.name));
-              core.setOutput('pullRequestLink', JSON.stringify(prUrl));
+              core.setOutput('reviewer1', randomReviewer);
+              core.setOutput('reviewer2', randomReviewer2);
+              core.setOutput('writer', prCreatorJson.name);
+              core.setOutput('pullRequestLink', prUrl);
             }
 
       - name: Add Reviewers
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewer }}, ${{ steps.pick_random_reviwer.outputs.reviewer2 }}
+          reviewers: ${{ steps.pick_random_reviwer.outputs.reviewer.githubName }}, ${{ steps.pick_random_reviwer.outputs.reviewer2.githubName }}
           token: ${{ secrets.GITHUB_TOKEN }}
       
 
@@ -53,7 +53,7 @@ jobs:
           curl -X POST https://api-slack.internal.bcsdlab.com/api/review-request/frontend \
           -H 'Content-Type: application/json' \
           -d '{
-                "pullRequestLink": "https://github.com/BCSDLab/KOIN_OWNER_WEB/pull/180",
-                "writer": "김하나",
-                "reviewers": ["채승윤", "최정훈"]
+                "pullRequestLink": ${{ steps.pick_random_reviwer.outputs.pullRequestLink }},
+                "writer": ${{ steps.pick_random_reviwer.outputs.writer }},
+                "reviewers": [${{ steps.pick_random_reviwer.outputs.reviewer.name }}, ${{ steps.pick_random_reviwer.outputs.reviewer2.name }}]
               }'
