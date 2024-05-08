@@ -22,7 +22,7 @@ jobs:
             core.setOutput('mergedBy', JSON.stringify(mergedBy));
             core.setOutput('baseBranch', JSON.stringify(baseBranch));
       - name: Delete Branches
-        if: ${{ github.base_ref }} !== ${{ github.ref_name }}
+        if: ${{ github.ref_name }} !== ${{ steps.check_pr_merged.outputs.mergerdBy }}
         run: |
-          git branch -d ${{ github.ref_name }}
-          git push origin --delete ${{ github.ref_name }}
+          git branch -d ${{ steps.check_pr_merged.outputs.mergerdBy }}
+          git push origin --delete ${{ steps.check_pr_merged.outputs.mergerdBy }}
