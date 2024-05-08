@@ -13,8 +13,8 @@ jobs:
         run: |
           const baseBranch = ${{ github.event.pull_request.base.ref }}
           const headBranch = ${{ github.event.pull_request.head.ref }}
-          core.setOutput('baseBranch', baseBranch);
-          core.setOutput('headBranch', headBranch);
+          core.setOutput('baseBranch', JSON.strigify(baseBranch));
+          core.setOutput('headBranch', JSON.stringify(headBranch));
       - name: Delete Branch
         if: ${{ steps.get_branch_name.outputs.baseBranch }}  !== ${{ steps.get_branch_name.outputs.headBranch }}
         run: |
