@@ -18,7 +18,8 @@ jobs:
             const prUrl = c.html_url ?? context.payload.pull_request._links.html.href;
             const mergedBy = github.head_ref;
             const baseBranch = context.payload.pull_request.base.ref;
-
+            echo context.payload.pull_request;
+            echo github;
             core.error("error", context.payload.pull_request);
             core.error("error", github);
             core.setOutput('pullRequestLink', JSON.stringify(prUrl));
