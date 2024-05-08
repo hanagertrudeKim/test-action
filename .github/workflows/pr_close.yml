@@ -16,12 +16,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prUrl = context.payload.pull_request.html_url ?? context.payload.pull_request._links.html.href;
-            const mergedBy = context.payload.pull_request.merged_by.login;
+            const mergedBy = github.head_ref;
             const baseBranch = context.payload.pull_request.base.ref;
             core.setOutput('pullRequestLink', JSON.stringify(prUrl));
             core.setOutput('mergedBy', JSON.stringify(mergedBy));
             core.setOutput('baseBranch', JSON.stringify(baseBranch));
-      - name: Delete Branches
+      - name: Delete Branch
         if: ${{ github.ref_name }} !== ${{ steps.check_pr_merged.outputs.mergerdBy }}
         run: |
           git branch -d ${{ steps.check_pr_merged.outputs.mergerdBy }}
