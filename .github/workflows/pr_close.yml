@@ -15,13 +15,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const prUrl = c.html_url ?? context.payload.pull_request._links.html.href;
+            const prUrl = context.payload.pull_request._links.html.href;
             const mergedBy = github.head_ref;
             const baseBranch = context.payload.pull_request.base.ref;
-            echo context.payload.pull_request;
-            echo github;
-            core.error("error", context.payload.pull_request);
-            core.error("error", github);
+            echo ${{context.payload.pull_request}};
+            echo ${{github}};
+            core.debug(${{context.payload.pull_request}});
+            core.debug(${{github}});
             core.setOutput('pullRequestLink', JSON.stringify(prUrl));
             core.setOutput('mergedBy', JSON.stringify(mergedBy));
             core.setOutput('baseBranch', JSON.stringify(baseBranch));
