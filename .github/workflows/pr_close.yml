@@ -16,8 +16,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prUrl = context.payload.pull_request.html_url ?? context.payload.pull_request._links.html.href;
+            const mergedBy = context.payload.pull_request.merged_by.login;
+            const baseBranch = context.payload.pull_request.base.ref;
             core.setOutput('pullRequestLink', JSON.stringify(prUrl));
+            core.setOutput('mergedBy', JSON.stringify(mergedBy));
+            core.setOutput('baseBranch', JSON.stringify(baseBranch));
       - name: Delete Branches
+        if: steps.check_pr_merged.outputs.baseBranch == 'develop'
         run: |
           git branch -d ${{ github.ref_name }}
           git push origin --delete ${{ github.ref_name }}
