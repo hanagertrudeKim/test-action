@@ -21,4 +21,5 @@ jobs:
         if: ${{ steps.get_branch_name.outputs.baseBranch }} != ${{ steps.get_branch_name.outputs.headBranch }}
         run: |
           git checkout ${{ steps.get_branch_name.outputs.baseBranch }}
+          git branch -d ${{ steps.get_branch_name.outputs.headBranch }}
           git push origin --delete ${{ steps.get_branch_name.outputs.headBranch }}
