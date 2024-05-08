@@ -9,11 +9,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get branch names
+        id: get_branch_name
         run: |
-          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
-          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
+          const baseBranch = ${{ github.event.pull_request.base.ref }}
+          const headBranch = ${{ github.event.pull_request.head.ref }}
+          core.setOutput('baseBranch', baseBranch);
+          core.setOutput('headBranch', headBranch);
       - name: Delete Branch
-        if: ${{ github.ref_name }} !== ${{ steps.check_pr_merged.outputs.mergerdBy }}
+        if: ${{ steps.get_branch_name.outputs.baseBranch }}  !== ${{ steps.get_branch_name.outputs.headBranch }}
         run: |
-          git branch -d ${{ steps.check_pr_merged.outputs.mergerdBy }}
-          git push origin --delete ${{ steps.check_pr_merged.outputs.mergerdBy }}
+          git checkout ${{ steps.get_branch_name.outputs.baseBranch }}
+          git branch -d ${{ steps.check_pr_merged.outputs.headBranch }}
+          git push origin --delete ${{ steps.check_pr_merged.outputs.headBranch }}
