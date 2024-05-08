@@ -10,14 +10,17 @@ jobs:
         uses: actions/checkout@v2
       - name: Get branch names
         id: get_branch_name
-        run: |
-          const baseBranch = ${{ github.event.pull_request.base.ref }}
-          const headBranch = ${{ github.event.pull_request.head.ref }}
-          core.setOutput('baseBranch', JSON.strigify(baseBranch));
-          core.setOutput('headBranch', JSON.stringify(headBranch));
+        with:
+          script: |
+            const baseBranch = github.event.pull_request.base.ref;
+            const headBranch = github.event.pull_request.head.ref;
+            core.setOutput('baseBranch', JSON.stringify(baseBranch));
+            core.setOutput('headBranch', JSON.stringify(headBranch));
+
       - name: Delete Branch
-        if: ${{ steps.get_branch_name.outputs.baseBranch }}  !== ${{ steps.get_branch_name.outputs.headBranch }}
-        run: |
-          git checkout ${{ steps.get_branch_name.outputs.baseBranch }}
-          git branch -d ${{ steps.check_pr_merged.outputs.headBranch }}
-          git push origin --delete ${{ steps.check_pr_merged.outputs.headBranch }}
+        if: ${{ steps.get_branch_name.outputs.baseBranch }} !== ${{ steps.get_branch_name.outputs.headBranch }}
+        with:
+          script: |
+            git checkout ${{ steps.get_branch_name.outputs.baseBranch }}
+            git branch -d ${{ steps.get_branch_name.outputs.headBranch }}
+            git push origin --delete ${{ steps.get_branch_name.outputs.headBranch }}
